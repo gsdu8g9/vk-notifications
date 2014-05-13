@@ -42,13 +42,6 @@ removeGroupItemFromStorage = (gid, fn) ->
       fn.error 'item is undefined'
 
 
-drawGroupItem = ($owner, content) ->
-  $owner
-    .append($('<img />', {src: content.photo}))
-    .append($('<a />', {class: 'header', href: "http://vk.com/#{content.screen_name}", text: content.name}))
-    .append($('<button />', {class: 'btn', name: 'removeGroupItem', text: 'Отписаться', 'data-group': content.gid}))
-
-
 # Event handler to remove group-item from storage
 #
 $(document).on 'click', 'button[name=removeGroupItem]', (e) ->
@@ -67,72 +60,13 @@ $(document).on 'keypress', 'input[name=pageUrl]', (e) ->
     $(this).parent().find('button[name=saveGroupItem]').click()
 
 
-# Live listener of click event
-#
-# Tries to saves information about group to localstorage
-#
-$(document).on 'click', 'button[name=saveGroupItem]', (e) ->
-  $self = $(this)
-  $parent = $self.parent()
-
-  $loader = $parent.find('.loader')
-  $loader.addClass('visible')
-
-  $status = $parent.find('.status')
-  $status.removeClass('visible')
-
-  $pageUrl = $parent.find('[name=pageUrl]')
-
-  url = $pageUrl.val()
-  shortName = url.match(/vk.com\/(\w+)/)
-
-  unless shortName
-    $status.text('Неверный формат ссылки').addClass('visible')
-    $loader.removeClass('visible')
-    return
-
-  eventMatch = shortName[1].match(/event(\d+)/)
-
-  shortName = eventMatch if eventMatch
-
-  API.call 'groups.getById', {gid: shortName[1], access_token: accessToken}, (data) ->
-    unless data.error
-      addGroupItemToStroage data.response[0], success: ->
-        $pageUrl.remove()
-        $self.remove()
-        drawGroupItem($parent, data.response[0])
-    else
-      $status.text('Группа не найдена').addClass('visible')
-      $loader.removeClass('visible')
-      return
-
-  $loader.removeClass('visible')
-  e.preventDefault()
-
-
 $ ->
 
   # Remove all group-items from local storage
   #
   $('#clean-items').click (e) ->
     chrome.storage.local.remove 'group_items', ->
-      $('.item').remove()
-
-    e.preventDefault()
-
-
-  # Add controls for adding a group-item
-  #
-  $('#add-item').click (e) ->
-    $input = $('<input />', {type: 'text', name: 'pageUrl', placeholder: 'Ссылка на группу'})
-    $('<div />', {class: 'item'})
-      .append($input)
-      .append($('<button />', {class: 'btn', name: 'saveGroupItem', text: 'Подписаться'}))
-      .append($('<div />', {class: 'loader'})).appendTo $('.option-items')
-
-    $input.focus()
-
-    e.preventDefault()
+      groups = []
 
 
   # Auth button click listener

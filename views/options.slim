@@ -1,20 +1,37 @@
 doctype html
-html
+html ng-app="vk-news"
   head
     title Оповещения VK
     meta charset="utf-8"
     link rel="stylesheet" href="stylesheets/normalize.css"
     link rel="stylesheet" href="stylesheets/styles.css"
-    script type="text/javascript" src="javascripts/options.js"
-body class="options"
+    script type="text/javascript" src="javascripts/angular.min.js"
+    script type="text/javascript" src="javascripts/app.js"
+body.options ng-controller="OptionsCtrl"
   header
     | Оповещения VK
     button class="btn right" id="clean-items"
       | Очистить список групп
   #wrapper
-    div class="auth-actions"
+    .auth-actions
       button class="btn" id="auth"
         | Авторизоваться
-    div class="option-items"
-    button class="btn" id="add-item"
+
+    .option-items
+      .item ng-repeat="group in groups"
+        img ng-src="{{ group.photo }}"
+        a.header ng-href="http://vk.com/{{ group.screen_name }}"
+          | {{ group.name }}
+        button.btn name="removeGroupItem" data-group="{{ group.gid }}"
+          | Отписаться
+
+      .item ng-show="isItemFormShowed"
+        input type="text" ng-model="pageUrl" name="pageUrl" placeholder="Ссылка на группу"
+        button.btn ng-click="saveGroupItem()"
+          | Подписаться
+        .loader ng-class="{visible: isSaving}"
+        .status ng-class="{visible: hasError}"
+          | {{ hasError }}
+
+    button class="btn" ng-click="showItemForm()"
       | Добавить
