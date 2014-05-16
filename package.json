@@ -2,13 +2,6 @@
   "name": "vk-notifications",
   "version": "1.0.3",
   "description": "Adds notifications about new post in groups.",
-  "dependencies": {
-    "jquery": "^2.1.1",
-    "underscore": "^1.6.0",
-    "emoji": "git://github.com/jastkand/emoji.git#change-quotes-type",
-    "angular": "^1.2.16",
-    "normalize.css": "^3.0.1"
-  },
   "devDependencies": {
     "gulp": "~3.6.2",
     "gulp-watch": "~0.6.4",

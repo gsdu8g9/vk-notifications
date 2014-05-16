@@ -1,8 +1,8 @@
 `
-//= require ../node_modules/jquery/dist/jquery.min.js
+//= require ../bower_components/jquery/dist/jquery.min.js
 //= require api_manager.js
 //= require helpers.js
-//= require ../node_modules/emoji/lib/emoji.js
+//= require ../bower_components/emoji/lib/emoji.js
 //= require date.format.js
 `
 

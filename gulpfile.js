@@ -67,13 +67,13 @@ gulp.task('slim-build', function() {
 
 gulp.task('vendor-stylesheets', function () {
   gulp.src([
-    'node_modules/normalize.css/normalize.css',
-    'node_modules/emoji/lib/emoji.css'
+    'bower_components/normalize.css/normalize.css',
+    'bower_components/emoji/lib/emoji.css'
   ]).pipe( gulp.dest(STYLESHEETS_PATH) )
 });
 
 gulp.task('vendor-javascripts', function () {
   gulp.src([
-    'node_modules/angular/lib/angular.min.js'
+    'bower_components/angular/angular.min.js'
   ]).pipe( gulp.dest(JAVASCRIPTS_PATH) )
 });
