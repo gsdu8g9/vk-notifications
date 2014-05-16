@@ -1,0 +1,16 @@
+{
+  "name": "vk-notifications",
+  "version": "1.0.3",
+  "homepage": "https://github.com/jastkand/vk-notifications",
+  "authors": [
+    "Andrey Krivko <jastkand@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
