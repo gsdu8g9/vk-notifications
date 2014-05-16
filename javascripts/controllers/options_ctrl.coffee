@@ -9,6 +9,11 @@ OptionsCtrl = ($scope, $rootScope, API, Authorization) ->
   Authorization.getAccessToken().then (result) ->
     $scope.accessToken = result
 
+  $scope.authenticate = ->
+    Authorization.authenticate().then (result) ->
+      if result.status
+        $scope.accessToken = result.accessToken
+
   $scope.showItemForm = ->
     $scope.pageUrl = ''
     $scope.isItemFormShowed = true

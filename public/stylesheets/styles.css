@@ -56,31 +56,29 @@ a {
   .popup #auth {
     display: none; }
 
-.options {
+.options-page {
   padding: 20px 40px; }
-  .options header {
+  .options-page .header {
     font-size: 120%;
     font-weight: bold;
     color: #45688E;
     padding-bottom: 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid #C0CAD5; }
-  .options .auth-actions {
-    display: none; }
-  .options .option-items .item {
+  .options-page .option-items .item {
     padding-bottom: 15px;
     margin-bottom: 15px;
     border-bottom: 1px solid #C0CAD5; }
-    .options .option-items .item img {
+    .options-page .option-items .item img {
       padding-right: 4px;
       float: left; }
-    .options .option-items .item a.header {
+    .options-page .option-items .item .group-header {
       color: #45688E;
       font-size: 12px;
       font-weight: bold;
       display: block;
       padding-bottom: 9px; }
-    .options .option-items .item input[name=pageUrl] {
+    .options-page .option-items .item input[name=pageUrl] {
       width: 250px;
       border: 1px solid #C0CAD5;
       background: #FFF;
@@ -90,20 +88,20 @@ a {
       outline: 0;
       vertical-align: top;
       margin-right: 4px; }
-    .options .option-items .item .loader {
+    .options-page .option-items .item .loader {
       display: none; }
-      .options .option-items .item .loader.visible {
+      .options-page .option-items .item .loader.visible {
         display: inline-block; }
-    .options .option-items .item .status {
+    .options-page .option-items .item .status {
       display: none;
       vertical-align: top;
       vertical-align: top;
       line-height: 24px;
       padding-left: 10px;
       color: #999; }
-      .options .option-items .item .status.visible {
+      .options-page .option-items .item .status.visible {
         display: inline-block; }
-    .options .option-items .item * {
+    .options-page .option-items .item * {
       margin-right: 4px; }
 
 #notifications {

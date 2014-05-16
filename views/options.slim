@@ -7,31 +7,32 @@ html ng-app="vk-news"
     link rel="stylesheet" href="stylesheets/styles.css"
     script type="text/javascript" src="javascripts/angular.min.js"
     script type="text/javascript" src="javascripts/app.js"
-body.options ng-controller="OptionsCtrl"
-  header
+body.options-page ng-controller="OptionsCtrl"
+  header.header
     | Оповещения VK
-    button class="btn right" id="clean-items"
+    button.btn.right
       | Очистить список групп
   #wrapper
-    .auth-actions
-      button class="btn" id="auth"
+    .auth-actions ng-show="!accessToken"
+      button.btn ng-click="authenticate()"
         | Авторизоваться
 
-    .option-items
-      .item ng-repeat="group in groups"
-        img ng-src="{{ group.photo }}"
-        a.header ng-href="http://vk.com/{{ group.screen_name }}"
-          | {{ group.name }}
-        button.btn name="removeGroupItem" data-group="{{ group.gid }}"
-          | Отписаться
+    .container ng-show="accessToken"
+      .option-items
+        .item ng-repeat="group in groups"
+          img ng-src="{{ group.photo }}"
+          a.group-header ng-href="http://vk.com/{{ group.screen_name }}"
+            | {{ group.name }}
+          button.btn name="removeGroupItem" data-group="{{ group.gid }}"
+            | Отписаться
 
-      .item ng-show="isItemFormShowed"
-        input type="text" ng-model="pageUrl" name="pageUrl" placeholder="Ссылка на группу"
-        button.btn ng-click="saveGroupItem()"
-          | Подписаться
-        .loader ng-class="{visible: isSaving}"
-        .status ng-class="{visible: hasError}"
-          | {{ hasError }}
+        .item ng-show="isItemFormShowed"
+          input type="text" ng-model="pageUrl" name="pageUrl" placeholder="Ссылка на группу"
+          button.btn ng-click="saveGroupItem()"
+            | Подписаться
+          .loader ng-class="{visible: isSaving}"
+          .status ng-class="{visible: hasError}"
+            | {{ hasError }}
 
-    button class="btn" ng-click="showItemForm()"
-      | Добавить
+      button class="btn" ng-click="showItemForm()"
+        | Добавить

@@ -1,9 +1,3 @@
-`
-//= require ../node_modules/jquery/dist/jquery.min.js
-//= require api_manager.js
-//= require helpers.js
-`
-
 groupItems = {}
 accessToken = null
 
@@ -67,19 +61,6 @@ $ ->
   $('#clean-items').click (e) ->
     chrome.storage.local.remove 'group_items', ->
       groups = []
-
-
-  # Auth button click listener
-  #
-  # Sends message to background script to run 'vk_notification_auth' action
-  #
-  $('#auth').click (e) ->
-    chrome.runtime.sendMessage {action: "vk_notification_auth"}, (response) ->
-      if response.content is 'OK'
-        $('.auth-actions').hide()
-        $('.option-items, #add-item').show()
-
-    e.preventDefault()
 
 
   # Show auth button if user is not authorized
