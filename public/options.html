@@ -13,7 +13,7 @@
     Оповещения VK<button class="btn right">Очистить список групп</button>
   </header>
   <div id="wrapper">
-    <div class="auth-actions" ng-show="!accessToken">
+    <div class="auth-actions" ng-hide="accessToken">
       <button class="btn" ng-click="authenticate()">Авторизоваться</button>
     </div>
     <div class="container" ng-show="accessToken">

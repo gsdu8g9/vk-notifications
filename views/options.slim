@@ -12,7 +12,7 @@ body.options-page ng-controller="OptionsCtrl"
     button.btn.right
       | Очистить список групп
   #wrapper
-    .auth-actions ng-show="!accessToken"
+    .auth-actions ng-hide="accessToken"
       button.btn ng-click="authenticate()"
         | Авторизоваться
 
