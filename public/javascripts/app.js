@@ -216,11 +216,6 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
   var OptionsCtrl;
 
   OptionsCtrl = function($scope, $rootScope, API, Authorization) {
-    $scope.pageUrl = '';
-    $scope.isItemFormShowed = false;
-    $scope.isSaving = false;
-    $scope.hasError = false;
-    $scope.errorMessage = '';
     $scope.groups = [];
     Authorization.getAccessToken().then(function(result) {
       return $scope.accessToken = result;
@@ -232,19 +227,21 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
         }
       });
     };
-    $scope.showItemForm = function() {
-      $scope.pageUrl = '';
-      return $scope.isItemFormShowed = true;
+    $scope.showGroupForm = function() {
+      $scope.groupForm.groupUrl = '';
+      $scope.groupForm.editMode = true;
+      $scope.groupForm.hasError = false;
+      return $scope.groupForm.isSaving = false;
     };
-    return $scope.saveGroupItem = function() {
+    return $scope.saveGroupForm = function() {
       var eventMatch, shortName, url;
-      $scope.isSaving = true;
-      $scope.hasError = false;
-      url = $scope.pageUrl;
+      $scope.groupForm.isSaving = true;
+      $scope.groupForm.hasError = false;
+      url = $scope.groupForm.groupUrl;
       shortName = url.match(/vk.com\/(\w+)/);
       if (!shortName) {
-        $scope.hasError = 'Неверный формат ссылки';
-        $scope.isSaving = false;
+        $scope.groupForm.hasError = 'Неверный формат ссылки';
+        $scope.groupForm.isSaving = false;
         return;
       }
       eventMatch = shortName[1].match(/event(\d+)/);
@@ -260,11 +257,11 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
           console.log('save item here');
           return $scope.groups.push(data.response[0]);
         } else {
-          $scope.hasError = 'Группа не найдена';
-          $scope.isSaving = false;
+          $scope.groupForm.hasError = 'Группа не найдена';
+          $scope.groupForm.isSaving = false;
         }
       });
-      return $scope.isSaving = false;
+      return $scope.groupForm.isSaving = false;
     };
   };
 

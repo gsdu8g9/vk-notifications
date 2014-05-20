@@ -21,15 +21,17 @@
         <div class="item" ng-repeat="group in groups">
           <img ng-src="{{ group.photo }}" /><a class="group-header" ng-href="http://vk.com/{{ group.screen_name }}">{{ group.name }}</a><button class="btn" data-group="{{ group.gid }}" name="removeGroupItem">Отписаться</button>
         </div>
-        <div class="item" ng-show="isItemFormShowed">
-          <input name="pageUrl" ng-model="pageUrl" placeholder="Ссылка на группу" type="text" /><button class="btn" ng-click="saveGroupItem()">Подписаться</button>
-          <div class="loader" ng-class="{visible: isSaving}"></div>
-          <div class="status" ng-class="{visible: hasError}">
-            {{ hasError }}
-          </div>
+        <div class="item" ng-show="groupForm.editMode">
+          <form name="groupForm" ng-submit="saveGroupForm()" novalidate="">
+            <input class="form-control" name="groupUrl" ng-model="groupForm.groupUrl" placeholder="Ссылка на группу" type="text" /><input class="btn" type="submit" value="Подписаться" />
+            <div class="loader" ng-class="{visible: groupForm.isSaving}"></div>
+            <div class="status" ng-class="{visible: groupForm.hasError}">
+              {{ groupForm.hasError }}
+            </div>
+          </form>
         </div>
       </div>
-      <button class="btn" ng-click="showItemForm()">Добавить</button>
+      <button class="btn" ng-click="showGroupForm()">Добавить</button>
     </div>
   </div>
 </body>

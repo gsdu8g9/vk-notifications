@@ -1,9 +1,4 @@
 OptionsCtrl = ($scope, $rootScope, API, Authorization) ->
-  $scope.pageUrl = ''
-  $scope.isItemFormShowed = false
-  $scope.isSaving = false
-  $scope.hasError = false
-  $scope.errorMessage = ''
   $scope.groups = []
 
   Authorization.getAccessToken().then (result) ->
@@ -14,20 +9,22 @@ OptionsCtrl = ($scope, $rootScope, API, Authorization) ->
       if result.status
         $scope.accessToken = result.accessToken
 
-  $scope.showItemForm = ->
-    $scope.pageUrl = ''
-    $scope.isItemFormShowed = true
+  $scope.showGroupForm = ->
+    $scope.groupForm.groupUrl = ''
+    $scope.groupForm.editMode = true
+    $scope.groupForm.hasError = false
+    $scope.groupForm.isSaving = false
 
-  $scope.saveGroupItem = ->
-    $scope.isSaving = true
-    $scope.hasError = false
+  $scope.saveGroupForm = ->
+    $scope.groupForm.isSaving = true
+    $scope.groupForm.hasError = false
 
-    url = $scope.pageUrl
+    url = $scope.groupForm.groupUrl
     shortName = url.match(/vk.com\/(\w+)/)
 
     unless shortName
-      $scope.hasError = 'Неверный формат ссылки'
-      $scope.isSaving = false
+      $scope.groupForm.hasError = 'Неверный формат ссылки'
+      $scope.groupForm.isSaving = false
       return
 
     eventMatch = shortName[1].match(/event(\d+)/)
@@ -44,11 +41,11 @@ OptionsCtrl = ($scope, $rootScope, API, Authorization) ->
         #   drawGroupItem($parent, data.response[0])
         $scope.groups.push data.response[0]
       else
-        $scope.hasError = 'Группа не найдена'
-        $scope.isSaving = false
+        $scope.groupForm.hasError = 'Группа не найдена'
+        $scope.groupForm.isSaving = false
         return
 
-    $scope.isSaving = false
+    $scope.groupForm.isSaving = false
 
 VKNews.controller 'OptionsCtrl', [
   '$scope',

@@ -25,13 +25,14 @@ body.options-page ng-controller="OptionsCtrl"
           button.btn name="removeGroupItem" data-group="{{ group.gid }}"
             | Отписаться
 
-        .item ng-show="isItemFormShowed"
-          input type="text" ng-model="pageUrl" name="pageUrl" placeholder="Ссылка на группу"
-          button.btn ng-click="saveGroupItem()"
-            | Подписаться
-          .loader ng-class="{visible: isSaving}"
-          .status ng-class="{visible: hasError}"
-            | {{ hasError }}
+        .item ng-show="groupForm.editMode"
+          form name="groupForm" ng-submit="saveGroupForm()" novalidate=true
+            input.form-control type="text" ng-model="groupForm.groupUrl" name="groupUrl" placeholder="Ссылка на группу"
+            input.btn type="submit" value="Подписаться"
 
-      button class="btn" ng-click="showItemForm()"
+            .loader ng-class="{visible: groupForm.isSaving}"
+            .status ng-class="{visible: groupForm.hasError}"
+              | {{ groupForm.hasError }}
+
+      button class="btn" ng-click="showGroupForm()"
         | Добавить
