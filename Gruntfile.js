@@ -9,8 +9,10 @@ module.exports = function(grunt) {
             "bower_components/angular",
             "stylesheets"
           ],
+          enable: ['autoprefixer'],
           engines: {
-            Coffee: {}
+            Coffee: {},
+            Autoprefixer: ['last 5 Chrome versions']
           }
         },
         files: [
