@@ -28,10 +28,22 @@ module.exports = function(grunt) {
           }
         ]
       }
+    },
+    slim: {
+      dist: {
+        options: {
+          pretty: true
+        },
+        files: {
+          'public/options.html': 'views/options.slim',
+          'public/popup.html': 'views/popup.slim'
+        }
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-mincer');
+  grunt.loadNpmTasks('grunt-slim');
 
-  grunt.registerTask('default', ['mince']);
+  grunt.registerTask('default', ['mince', 'slim']);
 };

@@ -15,7 +15,8 @@
     "grunt": "^0.4.5",
     "grunt-mincer": "^1.0.0-beta2",
     "node-sass": "^0.8.6",
-    "coffee-script": "^1.7.1"
+    "coffee-script": "^1.7.1",
+    "grunt-slim": "^0.1.0"
   },
   "repository": {
     "type": "git",
