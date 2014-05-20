@@ -215,8 +215,11 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
 }).call(this);(function() {
   var OptionsCtrl;
 
-  OptionsCtrl = function($scope, $rootScope, API, Authorization) {
+  OptionsCtrl = function($scope, $rootScope, API, Authorization, Group) {
     $scope.groups = [];
+    Group.query().then(function(result) {
+      return $scope.groups = result;
+    });
     Authorization.getAccessToken().then(function(result) {
       return $scope.accessToken = result;
     });
@@ -265,7 +268,7 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
     };
   };
 
-  VKNews.controller('OptionsCtrl', ['$scope', '$rootScope', 'API', 'Authorization', OptionsCtrl]);
+  VKNews.controller('OptionsCtrl', ['$scope', '$rootScope', 'API', 'Authorization', 'Group', OptionsCtrl]);
 
 }).call(this);(function() {
   VKNews.factory('Authorization', [
@@ -302,6 +305,31 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
             'vkaccess_token': null
           }, function(items) {
             return deferred.resolve(items.vkaccess_token);
+          });
+          return deferred.promise;
+        }
+      };
+    }
+  ]);
+
+}).call(this);(function() {
+  VKNews.factory('Group', [
+    '$q', function($q) {
+      return {
+        query: function() {
+          var deferred;
+          deferred = $q.defer();
+          chrome.storage.local.get({
+            'group_items': {}
+          }, function(items) {
+            var groupItems, item, key, result;
+            groupItems = items.group_items;
+            result = [];
+            for (key in groupItems) {
+              item = groupItems[key];
+              result.push(item);
+            }
+            return deferred.resolve(result);
           });
           return deferred.promise;
         }

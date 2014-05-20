@@ -62,29 +62,6 @@ $ ->
     chrome.storage.local.remove 'group_items', ->
       groups = []
 
-
-  # Show auth button if user is not authorized
-  #
-  chrome.storage.local.get 'vkaccess_token': {}, (items) ->
-    if items.vkaccess_token.length is undefined
-      $('.auth-actions').show()
-      $('.option-items, #add-item').hide()
-      return
-    else
-      accessToken = items.vkaccess_token
-
-
-  # Get group-items from local storage
-  #
-  chrome.storage.local.get 'group_items': {}, (items) ->
-    groupItems = items.group_items
-
-    for key, item of groupItems
-      $parent = $('<div />', {class: 'item'})
-      $('.option-items').append($parent)
-
-      drawGroupItem($parent, item)
-
 #      TODO: make update of information about group on opening options page
 #
 #      API.call 'groups.getById', {gid: key}, (data) ->
