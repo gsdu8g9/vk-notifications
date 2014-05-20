@@ -141,6 +141,7 @@ a {
     border-bottom: 1px solid #C0CAD5; }
     .options-page .option-items .item img {
       padding-right: 4px;
+      margin-right: 4px;
       float: left; }
     .options-page .option-items .item .group-header {
       color: #45688E;
@@ -158,8 +159,11 @@ a {
       outline: 0;
       vertical-align: top;
       margin-right: 4px; }
+    .options-page .option-items .item .btn {
+      margin-right: 4px; }
     .options-page .option-items .item .loader {
-      display: none; }
+      display: none;
+      margin-right: 4px; }
       .options-page .option-items .item .loader.visible {
         display: inline-block; }
     .options-page .option-items .item .status {
@@ -171,5 +175,3 @@ a {
       color: #999; }
       .options-page .option-items .item .status.visible {
         display: inline-block; }
-    .options-page .option-items .item * {
-      margin-right: 4px; }
