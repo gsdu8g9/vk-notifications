@@ -1,65 +1,8 @@
 (function() {
-  var OptionsCtrl;
-
   window.VKNews = angular.module('vk-news', []);
 
-  VKNews.factory('Authorization', [
-    '$q', function($q) {
-      return {
-        authenticate: function() {
-          var deferred;
-          deferred = $q.defer();
-          chrome.runtime.sendMessage({
-            action: "vk_notification_auth"
-          }, (function(_this) {
-            return function(response) {
-              if (response.content === 'OK') {
-                return _this.getAccessToken().then(function(result) {
-                  return deferred.resolve({
-                    status: true,
-                    access_token: result
-                  });
-                });
-              } else {
-                return deferred.resolve({
-                  status: false
-                });
-              }
-            };
-          })(this));
-          return deferred.promise;
-        },
-        setAccessToken: function(token) {},
-        getAccessToken: function() {
-          var deferred;
-          deferred = $q.defer();
-          chrome.storage.local.get({
-            'vkaccess_token': null
-          }, function(items) {
-            return deferred.resolve(items.vkaccess_token);
-          });
-          return deferred.promise;
-        }
-      };
-    }
-  ]);
-
-  VKNews.factory('API', [
-    '$http', function($http) {
-      return {
-        call: function(method, options, callback) {
-          return $http({
-            method: 'GET',
-            url: this.requestUrl(method),
-            params: options
-          }).success(callback).error(callback);
-        },
-        requestUrl: function(method) {
-          return "https://api.vk.com/method/" + method.toString();
-        }
-      };
-    }
-  ]);
+}).call(this);(function() {
+  var OptionsCtrl;
 
   OptionsCtrl = function($scope, $rootScope, API, Authorization) {
     $scope.pageUrl = '';
@@ -115,5 +58,68 @@
   };
 
   VKNews.controller('OptionsCtrl', ['$scope', '$rootScope', 'API', 'Authorization', OptionsCtrl]);
+
+}).call(this);(function() {
+  VKNews.factory('Authorization', [
+    '$q', function($q) {
+      return {
+        authenticate: function() {
+          var deferred;
+          deferred = $q.defer();
+          chrome.runtime.sendMessage({
+            action: "vk_notification_auth"
+          }, (function(_this) {
+            return function(response) {
+              if (response.content === 'OK') {
+                return _this.getAccessToken().then(function(result) {
+                  return deferred.resolve({
+                    status: true,
+                    access_token: result
+                  });
+                });
+              } else {
+                return deferred.resolve({
+                  status: false
+                });
+              }
+            };
+          })(this));
+          return deferred.promise;
+        },
+        setAccessToken: function(token) {},
+        getAccessToken: function() {
+          var deferred;
+          deferred = $q.defer();
+          chrome.storage.local.get({
+            'vkaccess_token': null
+          }, function(items) {
+            return deferred.resolve(items.vkaccess_token);
+          });
+          return deferred.promise;
+        }
+      };
+    }
+  ]);
+
+}).call(this);(function() {
+  VKNews.factory('API', [
+    '$http', function($http) {
+      return {
+        call: function(method, options, callback) {
+          return $http({
+            method: 'GET',
+            url: this.requestUrl(method),
+            params: options
+          }).success(callback).error(callback);
+        },
+        requestUrl: function(method) {
+          return "https://api.vk.com/method/" + method.toString();
+        }
+      };
+    }
+  ]);
+
+}).call(this);(function() {
+
 
 }).call(this);
