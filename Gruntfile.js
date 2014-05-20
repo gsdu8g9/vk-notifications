@@ -4,7 +4,11 @@ module.exports = function(grunt) {
     mince: {
       main: {
         options: {
-          include: ["javascripts", "stylesheets"],
+          include: [
+            "javascripts",
+            "bower_components/angular",
+            "stylesheets"
+          ],
           engines: {
             Coffee: {}
           }
