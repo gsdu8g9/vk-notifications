@@ -39,9 +39,11 @@ OptionsCtrl = ($scope, $rootScope, API, Authorization, Group) ->
     shortName = eventMatch if eventMatch
 
     API.call 'groups.getById', {group_ids: shortName[1], access_token: $scope.accessToken}, (data) ->
-      console.log data
       unless data.error
-        console.log 'save item here'
+        console.log 'save item execute'
+        Group.save data.response[0], (result)->
+          console.log(result)
+
         # addGroupItemToStroage data.response[0], success: ->
         #   $pageUrl.remove()
         #   $self.remove()
