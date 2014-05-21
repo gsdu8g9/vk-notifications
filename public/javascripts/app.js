@@ -230,6 +230,11 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
         }
       });
     };
+    $scope.clearAllGroups = function() {
+      return Group.clearAll().then(function() {
+        return $scope.groups = [];
+      });
+    };
     $scope.showGroupForm = function() {
       $scope.groupForm.groupUrl = '';
       $scope.groupForm.editMode = true;

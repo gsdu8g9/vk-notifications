@@ -1,4 +1,4 @@
-VKNews.factory 'Group', ['$q', ($q) ->
+VKNews.factory 'Group', ['$q', 'LocalStorage', 'SyncStorage', ($q, LocalStorage, SyncStorage) ->
   query: ->
     deferred = $q.defer()
 
@@ -12,4 +12,13 @@ VKNews.factory 'Group', ['$q', ($q) ->
       deferred.resolve result
 
     deferred.promise
+
+  # TODO: We need to clean only group items without authToken
+  clearAll: ->
+    promises = [
+      SyncStorage.clearValues().then(->),
+      LocalStorage.clearValues().then(->)
+    ]
+    $q.all(promises)
+
 ]

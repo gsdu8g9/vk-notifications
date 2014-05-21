@@ -9,7 +9,7 @@ html ng-app="vk-news"
 body.options-page ng-controller="OptionsCtrl"
   header.header
     | Оповещения VK
-    button.btn.right
+    button.btn.right ng-click="clearAllGroups()"
       | Очистить список групп
   #wrapper
     .auth-actions ng-hide="accessToken"

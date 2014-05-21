@@ -10,7 +10,7 @@
 </html>
 <body class="options-page" ng-controller="OptionsCtrl">
   <header class="header">
-    Оповещения VK<button class="btn right">Очистить список групп</button>
+    Оповещения VK<button class="btn right" ng-click="clearAllGroups()">Очистить список групп</button>
   </header>
   <div id="wrapper">
     <div class="auth-actions" ng-hide="accessToken">

@@ -12,6 +12,10 @@ OptionsCtrl = ($scope, $rootScope, API, Authorization, Group) ->
       if result.status
         $scope.accessToken = result.accessToken
 
+  $scope.clearAllGroups = ->
+    Group.clearAll().then ->
+      $scope.groups = []
+
   $scope.showGroupForm = ->
     $scope.groupForm.groupUrl = ''
     $scope.groupForm.editMode = true
