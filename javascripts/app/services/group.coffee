@@ -43,22 +43,34 @@ VKNews.factory 'Group', ['$q', 'LocalStorage', 'SyncStorage', ($q, LocalStorage,
       if angular.equals({}, object)
         group_ids = [item.gid]
 
-        chrome.storage.sync.set { group_ids: group_ids }, ->
-          console.log 'saved group_ids for the first time'
+        console.log 'saved group_ids for the first time'
+
+        itemObject = {}
+        itemObject[item.gid] = item
+
+        promises = [
+          SyncStorage.setValue({ group_ids: group_ids }).then(->),
+          LocalStorage.setValue(itemObject).then(->)
+        ]
+
+        $q.all(promises).then (values) ->
+          callback({ status: 'success', values: values })
       else
         group_ids = object.group_ids
 
         if group_ids.indexOf(item.gid) < 0
           console.log 'save info about group'
 
-          item_object = {}
-          item_object[item.gid] = item
+          itemObject = {}
+          itemObject[item.gid] = item
+
+          console.log itemObject
 
           group_ids.push(item.gid)
 
           promises = [
             SyncStorage.setValue({ group_ids: group_ids }).then(->),
-            LocalStorage.setValue(item_object).then(->)
+            LocalStorage.setValue(itemObject).then(->)
           ]
 
           $q.all(promises).then (values) ->
