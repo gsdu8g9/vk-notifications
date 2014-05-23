@@ -1,7 +1,7 @@
 VKNews.factory 'SyncStorage', ['$q', ($q) ->
   getValue: (name)->
     deferred = $q.defer()
-    chrome.storage.sync.get(name, (data)->deferred.resolve(data[name]))
+    chrome.storage.sync.get name, (data)->deferred.resolve(data[name])
     deferred.promise
 
   setValue: (object)->
