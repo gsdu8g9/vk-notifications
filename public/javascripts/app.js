@@ -230,6 +230,11 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
         }
       });
     };
+    $scope.removeGroup = function(group) {
+      return Group.remove(group.gid).then(function(data) {
+        return $scope.groups.splice($scope.groups.indexOf(group), 1);
+      });
+    };
     $scope.clearAllGroups = function() {
       return Group.clearAll().then(function() {
         return $scope.groups = [];
@@ -260,9 +265,11 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
         group_ids: shortName[1],
         access_token: $scope.accessToken
       }, function(data) {
-        console.log(data);
         if (!data.error) {
-          console.log('save item here');
+          console.log('save item execute');
+          Group.save(data.response[0], function(result) {
+            return console.log(result);
+          });
           return $scope.groups.push(data.response[0]);
         } else {
           $scope.groupForm.hasError = 'Группа не найдена';
@@ -319,22 +326,201 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
 
 }).call(this);(function() {
   VKNews.factory('Group', [
-    '$q', function($q) {
+    '$q', 'LocalStorage', 'SyncStorage', function($q, LocalStorage, SyncStorage) {
       return {
         query: function() {
+          var deferred, storagePromise;
+          deferred = $q.defer();
+          storagePromise = SyncStorage.getValue('group_ids');
+          storagePromise.then(function(groupIds) {
+            var item, key, promises;
+            promises = [];
+            for (key in groupIds) {
+              item = groupIds[key];
+              promises.push(LocalStorage.getValue(item));
+            }
+            return $q.all(promises).then(function(result) {
+              return deferred.resolve(result);
+            });
+          });
+          return deferred.promise;
+        },
+        clearAll: function() {
+          var promises, storagePromise;
+          storagePromise = SyncStorage.getValue('group_ids');
+          promises = [
+            storagePromise.then(function(groupIds) {
+              SyncStorage.removeValues('group_ids').then(function() {});
+              if (groupIds) {
+                return LocalStorage.removeValues(groupIds).then(function() {});
+              }
+            })
+          ];
+          return $q.all(promises);
+        },
+        save: function(item, callback) {
+          if (callback && typeof callback === "function") {
+            callback = callback;
+          } else {
+            callback = function() {};
+          }
+          if (!item) {
+            callback({
+              status: 'error',
+              msg: 'item is not specified'
+            });
+            return;
+          }
+          item.gid = "-" + item.gid;
+          return chrome.storage.sync.get('group_ids', (function(_this) {
+            return function(object) {
+              var group_ids, itemObject, promises;
+              console.log('group_ids', object);
+              if (angular.equals({}, object)) {
+                group_ids = [item.gid];
+                console.log('saved group_ids for the first time');
+                itemObject = {};
+                itemObject[item.gid] = item;
+                promises = [
+                  SyncStorage.setValue({
+                    group_ids: group_ids
+                  }).then(function() {}), LocalStorage.setValue(itemObject).then(function() {})
+                ];
+                $q.all(promises).then(function(values) {
+                  return callback({
+                    status: 'success',
+                    values: values
+                  });
+                });
+              } else {
+                group_ids = object.group_ids;
+                if (group_ids.indexOf(item.gid) < 0) {
+                  console.log('save info about group');
+                  itemObject = {};
+                  itemObject[item.gid] = item;
+                  console.log(itemObject);
+                  group_ids.push(item.gid);
+                  promises = [
+                    SyncStorage.setValue({
+                      group_ids: group_ids
+                    }).then(function() {}), LocalStorage.setValue(itemObject).then(function() {})
+                  ];
+                  $q.all(promises).then(function(values) {
+                    return callback({
+                      status: 'success',
+                      values: values
+                    });
+                  });
+                } else {
+                  console.log('update info about group');
+                  callback({
+                    status: 'error',
+                    msg: 'group exists'
+                  });
+                  return;
+                }
+                chrome.storage.sync.set({
+                  'group_ids': group_ids
+                }, function() {
+                  return console.log('saved group_ids');
+                });
+              }
+              return callback({
+                status: 'success'
+              });
+            };
+          })(this));
+        },
+        remove: function(groupId) {
+          var storagePromise;
+          storagePromise = SyncStorage.getValue('group_ids');
+          return $q.all(storagePromise.then(function(groupIds) {
+            groupIds.splice(groupIds.indexOf(groupId), 1);
+            SyncStorage.setValue({
+              group_ids: groupIds
+            }).then(function() {});
+            if (groupIds) {
+              return LocalStorage.removeValues(groupId).then(function() {});
+            }
+          }));
+        }
+      };
+    }
+  ]);
+
+}).call(this);(function() {
+  VKNews.factory('LocalStorage', [
+    '$q', function($q) {
+      return {
+        getValue: function(name) {
           var deferred;
           deferred = $q.defer();
-          chrome.storage.local.get({
-            'group_items': {}
-          }, function(items) {
-            var groupItems, item, key, result;
-            groupItems = items.group_items;
-            result = [];
-            for (key in groupItems) {
-              item = groupItems[key];
-              result.push(item);
-            }
-            return deferred.resolve(result);
+          chrome.storage.local.get(name, function(data) {
+            return deferred.resolve(data[name]);
+          });
+          return deferred.promise;
+        },
+        setValue: function(object) {
+          var deferred;
+          deferred = $q.defer();
+          chrome.storage.local.set(object, function() {
+            return deferred.resolve();
+          });
+          return deferred.promise;
+        },
+        clearValues: function() {
+          var deferred;
+          deferred = $q.defer();
+          chrome.storage.local.clear(function() {
+            return deferred.resolve();
+          });
+          return deferred.promise;
+        },
+        removeValues: function(keys) {
+          var deferred;
+          deferred = $q.defer();
+          chrome.storage.sync.remove(keys, function() {
+            return deferred.resolve();
+          });
+          return deferred.promise;
+        }
+      };
+    }
+  ]);
+
+}).call(this);(function() {
+  VKNews.factory('SyncStorage', [
+    '$q', function($q) {
+      return {
+        getValue: function(name) {
+          var deferred;
+          deferred = $q.defer();
+          chrome.storage.sync.get(name, function(data) {
+            return deferred.resolve(data[name]);
+          });
+          return deferred.promise;
+        },
+        setValue: function(object) {
+          var deferred;
+          deferred = $q.defer();
+          chrome.storage.sync.set(object, function() {
+            return deferred.resolve();
+          });
+          return deferred.promise;
+        },
+        clearValues: function() {
+          var deferred;
+          deferred = $q.defer();
+          chrome.storage.sync.clear(function() {
+            return deferred.resolve();
+          });
+          return deferred.promise;
+        },
+        removeValues: function(keys) {
+          var deferred;
+          deferred = $q.defer();
+          chrome.storage.sync.remove(keys, function() {
+            return deferred.resolve();
           });
           return deferred.promise;
         }
