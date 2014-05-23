@@ -1,24 +1,6 @@
 groupItems = {}
 accessToken = null
 
-# Adds group-item to localstorage
-#
-addGroupItemToStroage = (item, fn) ->
-  if item
-    if fn and fn.success and typeof fn.success is "function"
-      callback = fn.success
-    else
-      callback = ->
-
-    item.gid = "-#{item.gid}"
-
-    groupItems[item.gid] = item
-    chrome.storage.local.set {'group_items': groupItems}, callback
-  else
-    if fn and fn.error and typeof fn.error is "function"
-      fn.error 'item is undefined'
-
-
 # Removes group-item from localstorage
 #
 removeGroupItemFromStorage = (gid, fn) ->
