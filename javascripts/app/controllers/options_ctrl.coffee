@@ -12,6 +12,10 @@ OptionsCtrl = ($scope, $rootScope, API, Authorization, Group) ->
       if result.status
         $scope.accessToken = result.accessToken
 
+  $scope.removeGroup = (group) ->
+    Group.remove(group.gid).then (data)->
+      $scope.groups.splice($scope.groups.indexOf(group), 1)
+
   $scope.clearAllGroups = ->
     Group.clearAll().then ->
       $scope.groups = []

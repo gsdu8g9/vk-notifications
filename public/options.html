@@ -19,7 +19,7 @@
     <div class="container" ng-show="accessToken">
       <div class="option-items">
         <div class="item" ng-repeat="group in groups">
-          <img ng-src="{{ group.photo }}" /><a class="group-header" ng-href="http://vk.com/{{ group.screen_name }}">{{ group.name }}</a><button class="btn" data-group="{{ group.gid }}" name="removeGroupItem">Отписаться</button>
+          <img ng-src="{{ group.photo }}" /><a class="group-header" ng-href="http://vk.com/{{ group.screen_name }}">{{ group.name }}</a><button class="btn" ng-click="removeGroup(group)">Отписаться</button>
         </div>
         <div class="item" ng-show="groupForm.editMode">
           <form name="groupForm" ng-submit="saveGroupForm()" novalidate="">

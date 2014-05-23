@@ -22,7 +22,7 @@ body.options-page ng-controller="OptionsCtrl"
           img ng-src="{{ group.photo }}"
           a.group-header ng-href="http://vk.com/{{ group.screen_name }}"
             | {{ group.name }}
-          button.btn name="removeGroupItem" data-group="{{ group.gid }}"
+          button.btn ng-click="removeGroup(group)"
             | Отписаться
 
         .item ng-show="groupForm.editMode"

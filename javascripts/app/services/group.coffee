@@ -25,6 +25,7 @@ VKNews.factory 'Group', ['$q', 'LocalStorage', 'SyncStorage', ($q, LocalStorage,
     ]
     $q.all(promises)
 
+
   save: (item, callback) ->
     if callback and typeof callback is "function"
       callback = callback
@@ -84,4 +85,15 @@ VKNews.factory 'Group', ['$q', 'LocalStorage', 'SyncStorage', ($q, LocalStorage,
           console.log 'saved group_ids'
 
       callback({ status: 'success' })
+
+
+  remove: (groupId)->
+    storagePromise = SyncStorage.getValue('group_ids')
+
+    $q.all(storagePromise.then (groupIds)->
+      groupIds.splice(groupIds.indexOf(groupId), 1)
+      SyncStorage.setValue({ group_ids: groupIds }).then(->)
+      if groupIds
+        LocalStorage.removeValues(groupId).then(->)
+    )
 ]
