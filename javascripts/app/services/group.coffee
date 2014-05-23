@@ -1,15 +1,15 @@
 VKNews.factory 'Group', ['$q', 'LocalStorage', 'SyncStorage', ($q, LocalStorage, SyncStorage) ->
   query: ->
     deferred = $q.defer()
+    storagePromise = SyncStorage.getValue('group_ids')
 
-    chrome.storage.local.get 'group_items': {}, (items) ->
-      groupItems = items.group_items
-      result = []
+    storagePromise.then (groupIds)->
+      promises = []
+      for key, item of groupIds
+        promises.push(LocalStorage.getValue(item))
 
-      for key, item of groupItems
-        result.push(item)
-
-      deferred.resolve result
+      $q.all(promises).then (result)->
+        deferred.resolve result
 
     deferred.promise
 
