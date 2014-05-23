@@ -13,4 +13,9 @@ VKNews.factory 'LocalStorage', ['$q', ($q) ->
     deferred = $q.defer()
     chrome.storage.local.clear ->deferred.resolve()
     deferred.promise
+
+  removeValues: (keys)->
+    deferred = $q.defer()
+    chrome.storage.sync.remove keys, ->deferred.resolve()
+    deferred.promise
 ]

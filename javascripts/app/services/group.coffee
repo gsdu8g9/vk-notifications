@@ -13,11 +13,18 @@ VKNews.factory 'Group', ['$q', 'LocalStorage', 'SyncStorage', ($q, LocalStorage,
 
     deferred.promise
 
-  # TODO: We need to clean only group items without authToken
+
   clearAll: ->
+    deferred = $q.defer()
+
+    chrome.storage.sync.get 'group_ids', (object) ->
+      deferred.resolve object['group_ids']
+
     promises = [
-      SyncStorage.clearValues().then(->),
-      LocalStorage.clearValues().then(->)
+      deferred.promise.then (groupIds)->
+        SyncStorage.removeValues('group_ids').then(->)
+        if groupIds
+          LocalStorage.removeValues(groupIds).then(->)
     ]
     $q.all(promises)
 
