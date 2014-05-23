@@ -15,13 +15,10 @@ VKNews.factory 'Group', ['$q', 'LocalStorage', 'SyncStorage', ($q, LocalStorage,
 
 
   clearAll: ->
-    deferred = $q.defer()
-
-    chrome.storage.sync.get 'group_ids', (object) ->
-      deferred.resolve object['group_ids']
+    storagePromise = SyncStorage.getValue('group_ids')
 
     promises = [
-      deferred.promise.then (groupIds)->
+      storagePromise.then (groupIds)->
         SyncStorage.removeValues('group_ids').then(->)
         if groupIds
           LocalStorage.removeValues(groupIds).then(->)
