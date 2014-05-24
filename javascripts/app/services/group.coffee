@@ -26,65 +26,37 @@ VKNews.factory 'Group', ['$q', 'LocalStorage', 'SyncStorage', ($q, LocalStorage,
     $q.all(promises)
 
 
-  save: (item, callback) ->
-    if callback and typeof callback is "function"
-      callback = callback
-    else
-      callback = ->
-
-    unless item
-      callback({ status: 'error', msg: 'item is not specified' })
-      return
+  save: (item) ->
+    deferred = $q.defer()
+    return deferred.resolve({ status: 'error', msg: 'item is not specified' }).promise unless item
 
     item.gid = "-#{item.gid}"
 
-    chrome.storage.sync.get 'group_ids', (object) =>
-      console.log('group_ids', object)
+    SyncStorage.getValue('group_ids').then (groupIds) ->
+      groupIds = groupIds || []
 
-      if angular.equals({}, object)
-        group_ids = [item.gid]
-
-        console.log 'saved group_ids for the first time'
+      if groupIds.indexOf(item.gid) < 0
+        console.log 'save info about group'
 
         itemObject = {}
         itemObject[item.gid] = item
 
+        console.log itemObject
+
+        groupIds.push(item.gid)
+
         promises = [
-          SyncStorage.setValue({ group_ids: group_ids }).then(->),
+          SyncStorage.setValue({ group_ids: groupIds }).then(->),
           LocalStorage.setValue(itemObject).then(->)
         ]
 
         $q.all(promises).then (values) ->
-          callback({ status: 'success', values: values })
+          deferred.resolve({ status: 'success', values: values })
       else
-        group_ids = object.group_ids
+        console.log 'update info about group'
+        deferred.resolve({ status: 'error', msg: 'group exists' })
 
-        if group_ids.indexOf(item.gid) < 0
-          console.log 'save info about group'
-
-          itemObject = {}
-          itemObject[item.gid] = item
-
-          console.log itemObject
-
-          group_ids.push(item.gid)
-
-          promises = [
-            SyncStorage.setValue({ group_ids: group_ids }).then(->),
-            LocalStorage.setValue(itemObject).then(->)
-          ]
-
-          $q.all(promises).then (values) ->
-            callback({ status: 'success', values: values })
-        else
-          console.log 'update info about group'
-          callback({ status: 'error', msg: 'group exists' })
-          return
-
-        chrome.storage.sync.set { 'group_ids': group_ids }, ->
-          console.log 'saved group_ids'
-
-      callback({ status: 'success' })
+    deferred.promise
 
 
   remove: (groupId)->

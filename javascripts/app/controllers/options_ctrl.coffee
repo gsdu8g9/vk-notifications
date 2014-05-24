@@ -45,14 +45,9 @@ OptionsCtrl = ($scope, $rootScope, API, Authorization, Group) ->
     API.call 'groups.getById', {group_ids: shortName[1], access_token: $scope.accessToken}, (data) ->
       unless data.error
         console.log 'save item execute'
-        Group.save data.response[0], (result)->
+        Group.save(data.response[0]).then (result)->
           console.log(result)
-
-        # addGroupItemToStroage data.response[0], success: ->
-        #   $pageUrl.remove()
-        #   $self.remove()
-        #   drawGroupItem($parent, data.response[0])
-        $scope.groups.push data.response[0]
+          $scope.groups.push data.response[0]
       else
         $scope.groupForm.hasError = 'Группа не найдена'
         $scope.groupForm.isSaving = false
