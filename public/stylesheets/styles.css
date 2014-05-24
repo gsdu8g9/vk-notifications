@@ -21,80 +21,6 @@ a {
   color: #999;
   display: block; }
 
-.popup {
-  width: 450px; }
-  .popup #clean-up {
-    display: none; }
-  .popup header {
-    background: #E1E7ED;
-    color: #45688E;
-    height: 30px;
-    line-height: 30px;
-    padding: 0;
-    font-weight: bold;
-    box-shadow: 0px 1px 2px #999;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%; }
-    .popup header span {
-      padding: 0 12px; }
-    .popup header .pull-right {
-      padding: 0 12px; }
-      .popup header .pull-right span {
-        padding: 0 6px;
-        text-decoration: none; }
-        .popup header .pull-right span:last-child {
-          padding-right: 0; }
-        .popup header .pull-right span:hover {
-          color: #555; }
-        .popup header .pull-right span i {
-          font-size: 16px;
-          line-height: 32px; }
-  .popup #wrapper {
-    padding-top: 30px; }
-  .popup #auth {
-    display: none; }
-
-#notifications {
-  padding: 0; }
-  #notifications .item {
-    background: #fff;
-    padding: 8px 12px;
-    border-top: 1px solid #DAE2E8;
-    overflow: hidden;
-    text-overflow: ellipsis; }
-    #notifications .item:hover {
-      background: none repeat scroll 0 0 rgba(219, 227, 235, 0.5); }
-    #notifications .item .group-image {
-      width: 50px;
-      margin-right: 7px;
-      display: inline-block;
-      vertical-align: top; }
-    #notifications .item .item-content {
-      display: inline-block;
-      width: 369px;
-      vertical-align: top; }
-      #notifications .item .item-content .group-name {
-        font-weight: bold;
-        padding-bottom: 3px; }
-      #notifications .item .item-content .text {
-        margin-bottom: 4px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        line-height: 160%; }
-      #notifications .item .item-content .attachments .link {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: inline-block;
-        width: 330px; }
-      #notifications .item .item-content .datestamp {
-        margin-top: 4px; }
-  #notifications p {
-    padding-left: 12px;
-    padding-right: 12px; }
-
 .right {
   float: right; }
 
@@ -175,3 +101,74 @@ a {
       color: #999; }
       .options-page .option-items .item .status.visible {
         display: inline-block; }
+
+.popup-page {
+  width: 450px; }
+  .popup-page #clean-up {
+    display: none; }
+  .popup-page header {
+    background: #E1E7ED;
+    color: #45688E;
+    height: 30px;
+    line-height: 30px;
+    padding: 0;
+    font-weight: bold;
+    box-shadow: 0px 1px 2px #999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; }
+    .popup-page header span {
+      padding: 0 12px; }
+    .popup-page header .pull-right {
+      padding: 0 12px; }
+      .popup-page header .pull-right span {
+        padding: 0 6px;
+        text-decoration: none; }
+        .popup-page header .pull-right span:last-child {
+          padding-right: 0; }
+        .popup-page header .pull-right span:hover {
+          color: #555; }
+        .popup-page header .pull-right span i {
+          font-size: 16px;
+          line-height: 32px; }
+  .popup-page #wrapper {
+    padding-top: 30px; }
+  .popup-page #notifications {
+    padding: 0; }
+    .popup-page #notifications .item {
+      background: #fff;
+      padding: 8px 12px;
+      border-top: 1px solid #DAE2E8;
+      overflow: hidden;
+      text-overflow: ellipsis; }
+      .popup-page #notifications .item:hover {
+        background: none repeat scroll 0 0 rgba(219, 227, 235, 0.5); }
+      .popup-page #notifications .item .group-image {
+        width: 50px;
+        margin-right: 7px;
+        display: inline-block;
+        vertical-align: top; }
+      .popup-page #notifications .item .item-content {
+        display: inline-block;
+        width: 369px;
+        vertical-align: top; }
+        .popup-page #notifications .item .item-content .group-name {
+          font-weight: bold;
+          padding-bottom: 3px; }
+        .popup-page #notifications .item .item-content .text {
+          margin-bottom: 4px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          line-height: 160%; }
+        .popup-page #notifications .item .item-content .attachments .link {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: inline-block;
+          width: 330px; }
+        .popup-page #notifications .item .item-content .datestamp {
+          margin-top: 4px; }
+    .popup-page #notifications p {
+      padding-left: 12px;
+      padding-right: 12px; }
