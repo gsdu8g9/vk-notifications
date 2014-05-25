@@ -42,12 +42,12 @@ OptionsCtrl = ($scope, $rootScope, API, Authorization, Group) ->
 
     shortName = eventMatch if eventMatch
 
-    API.call 'groups.getById', {group_ids: shortName[1], access_token: $scope.accessToken}, (data) ->
-      unless data.error
+    API.call('groups.getById', {group_ids: shortName[1], access_token: $scope.accessToken}).then (response) ->
+      if response.status is 200
         console.log 'save item execute'
-        Group.save(data.response[0]).then (result)->
+        Group.save(response.data.response[0]).then (result)=>
           console.log(result)
-          $scope.groups.push data.response[0]
+          $scope.groups.push response.data.response[0]
       else
         $scope.groupForm.hasError = 'Группа не найдена'
         $scope.groupForm.isSaving = false
