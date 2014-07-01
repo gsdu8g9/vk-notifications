@@ -296,12 +296,26 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
     Authorization.getAccessToken().then(function(result) {
       return $scope.accessToken = result;
     });
-    $scope.signOut = function() {};
-    return $scope.authenticate = function() {
+    $scope.signOut = function() {
+      $scope.accessToken = null;
+      return Authorization.cleanSession();
+    };
+    $scope.authenticate = function() {
       return Authorization.authenticate().then(function(result) {
         if (result.status) {
           return $scope.accessToken = result.accessToken;
         }
+      });
+    };
+    $scope.openOptions = function() {
+      return chrome.runtime.sendMessage({
+        action: "open_options_page"
+      });
+    };
+    return $scope.readAll = function() {
+      return chrome.runtime.sendMessage({
+        action: "watch_post",
+        read: 'ALL'
       });
     };
   };
@@ -372,6 +386,9 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
             return deferred.resolve(items.vkaccess_token);
           });
           return deferred.promise;
+        },
+        cleanSession: function() {
+          return chrome.storage.local.remove('vkaccess_token');
         }
       };
     }

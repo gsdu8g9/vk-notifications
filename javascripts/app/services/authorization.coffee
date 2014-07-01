@@ -26,4 +26,7 @@ VKNews.factory 'Authorization', ['$q', ($q) ->
       deferred.resolve(items.vkaccess_token)
 
     deferred.promise
+
+  cleanSession: ->
+    chrome.storage.local.remove 'vkaccess_token'
 ]
