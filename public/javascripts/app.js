@@ -264,13 +264,15 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
       API.call('groups.getById', {
         group_ids: shortName[1],
         access_token: $scope.accessToken
-      }, function(data) {
-        if (!data.error) {
+      }).then(function(response) {
+        if (response.status === 200) {
           console.log('save item execute');
-          Group.save(data.response[0], function(result) {
-            return console.log(result);
-          });
-          return $scope.groups.push(data.response[0]);
+          return Group.save(response.data.response[0]).then((function(_this) {
+            return function(result) {
+              console.log(result);
+              return $scope.groups.push(response.data.response[0]);
+            };
+          })(this));
         } else {
           $scope.groupForm.hasError = 'Группа не найдена';
           $scope.groupForm.isSaving = false;
@@ -281,6 +283,57 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
   };
 
   VKNews.controller('OptionsCtrl', ['$scope', '$rootScope', 'API', 'Authorization', 'Group', OptionsCtrl]);
+
+}).call(this);(function() {
+  var PopupCtrl;
+
+  PopupCtrl = function($scope, $rootScope, API, Authorization, Group) {
+    $scope.groups = [];
+    Group.query().then(function(result) {
+      console.log(result);
+      return $scope.groups = result;
+    });
+    Authorization.getAccessToken().then(function(result) {
+      return $scope.accessToken = result;
+    });
+    $scope.signOut = function() {};
+    return $scope.authenticate = function() {
+      return Authorization.authenticate().then(function(result) {
+        if (result.status) {
+          return $scope.accessToken = result.accessToken;
+        }
+      });
+    };
+  };
+
+  VKNews.controller('PopupCtrl', ['$scope', '$rootScope', 'API', 'Authorization', 'Group', PopupCtrl]);
+
+}).call(this);(function() {
+  VKNews.filter('formatText', function() {
+    return function(input) {
+      var linkify;
+      linkify = function(text) {
+        var emailAddressPattern, pseudoUrlPattern, urlPattern;
+        urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
+        pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+        emailAddressPattern = /[\w.+-]+@[a-zA-Z_]+?(?:\.[a-zA-Z]{2,6})+/gim;
+        return text.replace(urlPattern, '<a href="$&">$&</a>').replace(pseudoUrlPattern, '$1<a href="http://$2">$2</a>').replace(emailAddressPattern, '<a href="mailto:$&">$&</a>');
+      };
+      input = input || '';
+      input = input.trim().replace(/\n/g, '<br/>');
+      input = linkify(input);
+      input = input.replace(/\[([^\|]+)\|([^\]]+)\]/gi, '<a href="http://vk.com/$1">$2</a>');
+      return jEmoji.unifiedToHTML(input);
+    };
+  });
+
+}).call(this);(function() {
+  VKNews.filter('groupLink', function() {
+    return function(input) {
+      input = input || '';
+      return "http://vk.com/" + input;
+    };
+  });
 
 }).call(this);(function() {
   VKNews.factory('Authorization', [
@@ -358,78 +411,45 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
           ];
           return $q.all(promises);
         },
-        save: function(item, callback) {
-          if (callback && typeof callback === "function") {
-            callback = callback;
-          } else {
-            callback = function() {};
-          }
+        save: function(item) {
+          var deferred;
+          deferred = $q.defer();
           if (!item) {
-            callback({
+            return deferred.resolve({
               status: 'error',
               msg: 'item is not specified'
-            });
-            return;
+            }).promise;
           }
           item.gid = "-" + item.gid;
-          return chrome.storage.sync.get('group_ids', (function(_this) {
-            return function(object) {
-              var group_ids, itemObject, promises;
-              console.log('group_ids', object);
-              if (angular.equals({}, object)) {
-                group_ids = [item.gid];
-                console.log('saved group_ids for the first time');
-                itemObject = {};
-                itemObject[item.gid] = item;
-                promises = [
-                  SyncStorage.setValue({
-                    group_ids: group_ids
-                  }).then(function() {}), LocalStorage.setValue(itemObject).then(function() {})
-                ];
-                $q.all(promises).then(function(values) {
-                  return callback({
-                    status: 'success',
-                    values: values
-                  });
+          SyncStorage.getValue('group_ids').then(function(groupIds) {
+            var itemObject, promises;
+            groupIds = groupIds || [];
+            if (groupIds.indexOf(item.gid) < 0) {
+              console.log('save info about group');
+              itemObject = {};
+              itemObject[item.gid] = item;
+              console.log(itemObject);
+              groupIds.push(item.gid);
+              promises = [
+                SyncStorage.setValue({
+                  group_ids: groupIds
+                }).then(function() {}), LocalStorage.setValue(itemObject).then(function() {})
+              ];
+              return $q.all(promises).then(function(values) {
+                return deferred.resolve({
+                  status: 'success',
+                  values: values
                 });
-              } else {
-                group_ids = object.group_ids;
-                if (group_ids.indexOf(item.gid) < 0) {
-                  console.log('save info about group');
-                  itemObject = {};
-                  itemObject[item.gid] = item;
-                  console.log(itemObject);
-                  group_ids.push(item.gid);
-                  promises = [
-                    SyncStorage.setValue({
-                      group_ids: group_ids
-                    }).then(function() {}), LocalStorage.setValue(itemObject).then(function() {})
-                  ];
-                  $q.all(promises).then(function(values) {
-                    return callback({
-                      status: 'success',
-                      values: values
-                    });
-                  });
-                } else {
-                  console.log('update info about group');
-                  callback({
-                    status: 'error',
-                    msg: 'group exists'
-                  });
-                  return;
-                }
-                chrome.storage.sync.set({
-                  'group_ids': group_ids
-                }, function() {
-                  return console.log('saved group_ids');
-                });
-              }
-              return callback({
-                status: 'success'
               });
-            };
-          })(this));
+            } else {
+              console.log('update info about group');
+              return deferred.resolve({
+                status: 'error',
+                msg: 'group exists'
+              });
+            }
+          });
+          return deferred.promise;
         },
         remove: function(groupId) {
           var storagePromise;
@@ -532,12 +552,12 @@ terminal:!0});O.angular.bootstrap?console.log("WARNING: Tried to load angular mo
   VKNews.factory('API', [
     '$http', function($http) {
       return {
-        call: function(method, options, callback) {
+        call: function(method, options) {
           return $http({
             method: 'GET',
             url: this.requestUrl(method),
             params: options
-          }).success(callback).error(callback);
+          });
         },
         requestUrl: function(method) {
           return "https://api.vk.com/method/" + method.toString();
