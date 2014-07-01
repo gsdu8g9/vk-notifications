@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="vk-news">
   <head>
     <title>Оповещения VK</title>
     <meta charset="utf-8" />
@@ -7,10 +7,10 @@
     <link href="stylesheets/styles.css" rel="stylesheet" />
     <link href="stylesheets/font-awesome.css" rel="stylesheet" />
     <link href="stylesheets/emoji.css" rel="stylesheet" />
-    <script src="javascripts/popup.js" type="text/javascript"></script>
+    <script src="javascripts/app.js" type="text/javascript"></script>
   </head>
 </html>
-<body class="popup">
+<body class="popup-page" ng-controller="PopupCtrl">
   <header>
     <span class="title">Оповещения VK</span>
     <div class="pull-right">
@@ -18,9 +18,24 @@
     </div>
   </header>
   <div id="wrapper">
-    <div id="notifications"></div>
+    <div id="notifications">
+      <div class="item" ng-repeat="group in groups">
+        <div class="group-image">
+          <a ng-href="group.screen_name | groupLink"><img ng-src="group.photo" title="{{ group.name }}" /></a>
+        </div>
+        <div class="item-content">
+          <div class="group-name">
+            <a ng-href="group.screen_name | groupLink">{{ group.name }}</a>
+          </div>
+          <div class="text">
+            {{ item.text | formatText }}
+          </div>
+          <span class="datestamp">{{ item.date * 1000 }}</span>
+        </div>
+      </div>
+    </div>
     <div class="actions">
-      <button class="btn" id="auth">Авторизоваться</button><button class="btn" id="signout">Выйти</button>
+      <button class="btn" ng-click="authenticate()" ng-hide="accessToken">Авторизоваться</button><button class="btn" ng-click="signOut()" ng-show="accessToken">Выйти</button>
     </div>
   </div>
 </body>

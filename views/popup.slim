@@ -1,5 +1,5 @@
 doctype html
-html
+html ng-app="vk-news"
   head
     title Оповещения VK
     meta charset="utf-8"
@@ -7,12 +7,11 @@ html
     link rel="stylesheet" href="stylesheets/styles.css"
     link rel="stylesheet" href="stylesheets/font-awesome.css"
     link rel="stylesheet" href="stylesheets/emoji.css"
-    script type="text/javascript" src="javascripts/popup.js"
-body class="popup"
+    script type="text/javascript" src="javascripts/app.js"
+body.popup-page ng-controller="PopupCtrl"
   header
-    span class="title"
-      | Оповещения VK
-    div class="pull-right"
+    span.title Оповещения VK
+    .pull-right
       span id="clean-up"
         i class="icon-eraser"
       span id="check-all" title="Прочитать все"
@@ -21,8 +20,22 @@ body class="popup"
         i class="icon-cog"
   #wrapper
     #notifications
-    div class="actions"
-      button class="btn" id="auth"
+      .item ng-repeat="group in groups"
+        .group-image
+          a ng-href="group.screen_name | groupLink"
+            img ng-src="group.photo" title="{{ group.name }}"
+        .item-content
+          .group-name
+            a ng-href="group.screen_name | groupLink"
+              | {{ group.name }}
+          .text
+            | {{ item.text | formatText }}
+          / .append( showAttachments(item.attachments) )
+          span.datestamp
+            | {{ item.date * 1000 }}
+            /  | dateFormat['longDate']
+    .actions
+      button.btn ng-hide="accessToken" ng-click="authenticate()"
         | Авторизоваться
-      button class="btn" id="signout"
+      button.btn ng-show="accessToken" ng-click="signOut()"
         | Выйти
