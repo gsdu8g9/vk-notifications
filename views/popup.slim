@@ -20,6 +20,7 @@ body.popup-page ng-controller="PopupCtrl"
         i class="icon-cog"
   #wrapper
     #notifications
+      p ng-if="!groups.length" Список отслеживаемых групп пуст. Добавьте группы в настройках расширения.
       .item ng-repeat="group in groups"
         .group-image
           a ng-href="group.screen_name | groupLink"

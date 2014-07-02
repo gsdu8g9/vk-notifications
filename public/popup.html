@@ -19,6 +19,9 @@
   </header>
   <div id="wrapper">
     <div id="notifications">
+      <p ng-if="!groups.length">
+        Список отслеживаемых групп пуст. Добавьте группы в настройках расширения.
+      </p>
       <div class="item" ng-repeat="group in groups">
         <div class="group-image">
           <a ng-href="group.screen_name | groupLink"><img ng-src="group.photo" title="{{ group.name }}" /></a>
