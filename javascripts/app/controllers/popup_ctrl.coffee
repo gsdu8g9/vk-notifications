@@ -1,12 +1,17 @@
-PopupCtrl = ($scope, $rootScope, API, Authorization, Group) ->
+PopupCtrl = ($scope, $rootScope, API, Authorization, Group, Post) ->
   $scope.groups = []
+  $scope.posts = []
 
-  Group.query().then (result)->
-    console.log result
-    $scope.groups = result
+  Group.query().then (groups)->
+    console.log groups
+    $scope.groups = groups
 
-  Authorization.getAccessToken().then (result) ->
-    $scope.accessToken = result
+  Authorization.getAccessToken().then (token) ->
+    $scope.accessToken = token
+
+    Post.query(token).then (posts)->
+      $scope.posts = posts
+      console.log $scope.posts
 
   $scope.signOut = ->
     $scope.accessToken = null
@@ -33,5 +38,6 @@ VKNews.controller 'PopupCtrl', [
   'API',
   'Authorization',
   'Group',
+  'Post',
   PopupCtrl
 ]
