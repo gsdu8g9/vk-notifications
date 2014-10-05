@@ -1,4 +1,4 @@
-VKNews.factory 'API', ['$http', ($http) ->
+angular.module('vk_api', []).factory 'API', ['$http', ($http) ->
   call: (method, options) ->
     $http
       method: 'GET'

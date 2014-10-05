@@ -1,1 +1,1 @@
-window.VKNews = angular.module('vk-news', [])
+window.VKNews = angular.module('vk-news', ['ngSanitize', 'vk_api'])
