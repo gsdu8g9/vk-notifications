@@ -3,15 +3,24 @@ PopupCtrl = ($scope, $rootScope, API, Authorization, Group, Post) ->
   $scope.posts = []
 
   Group.query().then (groups)->
-    console.log groups
     $scope.groups = groups
+    console.log 'Groups', groups
 
   Authorization.getAccessToken().then (token) ->
     $scope.accessToken = token
 
     Post.query(token).then (posts)->
-      $scope.posts = posts
-      console.log $scope.posts
+      console.log 'Posts', posts
+      $scope.posts = posts.posts
+
+  $scope.postGroup = (post) ->
+    result = $scope.groups.filter (element, index) ->
+      element if element.gid is post.to_id.toString()
+
+    if result.length > 0
+      result[0]
+    else
+      {}
 
   $scope.signOut = ->
     $scope.accessToken = null

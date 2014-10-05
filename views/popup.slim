@@ -21,19 +21,18 @@ body.popup-page ng-controller="PopupCtrl"
   #wrapper
     #notifications
       p ng-if="!groups.length" Список отслеживаемых групп пуст. Добавьте группы в настройках расширения.
-      .item ng-repeat="group in groups"
+      .item ng-repeat="post in posts" ng-init="group = postGroup(post)"
         .group-image
           a ng-href="group.screen_name | groupLink"
-            img ng-src="group.photo" title="{{ group.name }}"
+            img ng-src="{{ group.photo }}" title="{{ group.name }}"
         .item-content
           .group-name
             a ng-href="group.screen_name | groupLink"
               | {{ group.name }}
-          .text
-            | {{ item.text | formatText }}
-          / .append( showAttachments(item.attachments) )
+          .text ng-bind-html="post.text | formatText"
+          / .append( showAttachments(post.attachments) )
           span.datestamp
-            | {{ item.date * 1000 }}
+            | {{ post.date * 1000 }}
             /  | dateFormat['longDate']
     .actions
       button.btn ng-hide="accessToken" ng-click="authenticate()"
