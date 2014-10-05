@@ -19,6 +19,15 @@
 Разработка
 ----------
 
-    npm install
+Подготовка окружения для разработки
 
-    gulp
+```bash
+> sudo npm install -g grunt-cli
+> npm install
+```
+
+Сборка
+
+```bash
+> grunt
+```
