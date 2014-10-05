@@ -27,10 +27,6 @@ module.exports = function(grunt) {
           {
             src: ["stylesheets/styles.scss"],
             dest: "public/stylesheets/styles.css"
-          },
-          {
-            src: ["stylesheets/font-awesome.scss"],
-            dest: "public/stylesheets/font-awesome.css"
           }
         ]
       }
@@ -45,11 +41,21 @@ module.exports = function(grunt) {
           'public/popup.html': 'views/popup.slim'
         }
       }
-    }
+    },
+    clean: ['public'],
+    copy: {
+      manifest: {
+        src: 'resources/manifest.json',
+        dest: 'public/manifest.json'
+      },
+    },
   });
 
   grunt.loadNpmTasks('grunt-mincer');
   grunt.loadNpmTasks('grunt-slim');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   grunt.registerTask('default', ['mince', 'slim']);
+  grunt.registerTask('build', ['clean', 'default', 'copy']);
 };
