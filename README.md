@@ -26,8 +26,14 @@
 > npm install
 ```
 
-Сборка
+Компиляция ресурсов
 
 ```bash
 > grunt
+```
+
+Сборка
+
+```bash
+> grunt build
 ```
