@@ -7,6 +7,8 @@ module.exports = function(grunt) {
           include: [
             "javascripts",
             "bower_components/angular",
+            "bower_components/angular-sanitize",
+            "bower_components/emoji/lib",
             "stylesheets"
           ],
           enable: ['autoprefixer'],
@@ -17,7 +19,7 @@ module.exports = function(grunt) {
         },
         files: [
           {
-            src: ["javascripts/app.coffee"],
+            src: ["javascripts/application.js"],
             dest: "public/javascripts/app.js"
           },
           {
