@@ -8,6 +8,8 @@ module.exports = function(grunt) {
             "javascripts",
             "bower_components/angular",
             "bower_components/angular-sanitize",
+            "bower_components/components-font-awesome/css",
+            "bower_components/normalize.css",
             "bower_components/emoji/lib",
             "stylesheets"
           ],

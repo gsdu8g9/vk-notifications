@@ -18,7 +18,7 @@
     "underscore": "^1.6.0",
     "emoji": "^0.3.2",
     "angular": "^1.2.16",
-    "normalize.css": "^3.0.1",
+    "normalize.css": "~3.0.2",
     "angular-sanitize": "^1.2.26",
     "components-font-awesome": "~4.2.0"
   }
