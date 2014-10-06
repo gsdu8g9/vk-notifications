@@ -38,7 +38,8 @@ module.exports = function(grunt) {
         },
         files: {
           'public/options.html': 'views/options.slim',
-          'public/popup.html': 'views/popup.slim'
+          'public/popup.html': 'views/popup.slim',
+          'public/background.html': 'views/background.slim'
         }
       }
     },
