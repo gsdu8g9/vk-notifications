@@ -48,6 +48,10 @@ module.exports = function(grunt) {
         src: 'resources/manifest.json',
         dest: 'public/manifest.json'
       },
+      assets: {
+        src: 'assets/*',
+        dest: 'public/'
+      }
     },
   });
 
