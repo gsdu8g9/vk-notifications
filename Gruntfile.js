@@ -53,6 +53,12 @@ module.exports = function(grunt) {
       assets: {
         src: 'assets/*',
         dest: 'public/'
+      },
+      font_awesome_fonts: {
+        expand: true,
+        cwd: 'bower_components/components-font-awesome/fonts',
+        src: '*',
+        dest: 'public/fonts'
       }
     },
   });
