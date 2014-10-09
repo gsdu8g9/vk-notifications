@@ -29,8 +29,7 @@ body.popup-page ng-controller="PopupCtrl"
           .text ng-bind-html="post.text | formatText"
           / .append( showAttachments(post.attachments) )
           span.datestamp
-            | {{ post.date * 1000 }}
-            /  | dateFormat['longDate']
+            | {{ post.date * 1000 | date:'longDate' }}
     .actions
       button.btn ng-hide="accessToken" ng-click="authenticate()"
         | Авторизоваться

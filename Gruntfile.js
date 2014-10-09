@@ -7,6 +7,7 @@ module.exports = function(grunt) {
           include: [
             "javascripts",
             "bower_components/angular",
+            "bower_components/angular-i18n",
             "bower_components/angular-sanitize",
             "bower_components/components-font-awesome/css",
             "bower_components/normalize.css",
