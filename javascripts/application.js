@@ -1,3 +1,4 @@
+//= require jquery
 //= require angular
 //= require angular-locale_ru
 //= require angular-sanitize

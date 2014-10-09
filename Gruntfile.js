@@ -6,6 +6,7 @@ module.exports = function(grunt) {
         options: {
           include: [
             "javascripts",
+            "bower_components/jquery/dist",
             "bower_components/angular",
             "bower_components/angular-i18n",
             "bower_components/angular-sanitize",
