@@ -1,4 +1,4 @@
-VKNews.factory 'Authorization', ['$q', ($q) ->
+VKNews.factory 'Authentication', ['$q', ($q) ->
   authenticate: ->
     deferred = $q.defer()
 

@@ -1,14 +1,14 @@
-OptionsCtrl = ($scope, $rootScope, API, Authorization, Group) ->
+OptionsCtrl = ($scope, $rootScope, API, Authentication, Group) ->
   $scope.groups = []
 
   Group.query().then (result)->
     $scope.groups = result
 
-  Authorization.getAccessToken().then (result) ->
+  Authentication.getAccessToken().then (result) ->
     $scope.accessToken = result
 
   $scope.authenticate = ->
-    Authorization.authenticate().then (result) ->
+    Authentication.authenticate().then (result) ->
       if result.status
         $scope.accessToken = result.accessToken
 
@@ -59,7 +59,7 @@ VKNews.controller 'OptionsCtrl', [
   '$scope',
   '$rootScope',
   'API',
-  'Authorization',
+  'Authentication',
   'Group',
   OptionsCtrl
 ]
