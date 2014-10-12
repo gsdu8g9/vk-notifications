@@ -6,6 +6,11 @@ angular.module('vk-news').factory 'Browser', [->
     return '10+' if number > 10
     "#{number}"
 
+  alarms: chrome.alarms,
+
+  onInstalled: chrome.runtime.onInstalled,
+  onMessage: chrome.runtime.onMessage,
+
   setBadgeValue: (value) ->
     chrome.browserAction.setBadgeText({text: @_badgeText(value)})
 ]
