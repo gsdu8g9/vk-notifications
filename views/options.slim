@@ -5,33 +5,33 @@ html ng-app="vk-news" ng-cloak=true ng-csp=true
     meta charset="utf-8"
     link rel="stylesheet" href="stylesheets/styles.css"
     script type="text/javascript" src="javascripts/app.js"
-body.options-page ng-controller="OptionsCtrl"
-  header.header
-    | Оповещения VK
-    button.btn.right ng-click="clearAllGroups()"
-      | Очистить список групп
-  #wrapper
-    .auth-actions ng-hide="accessToken"
-      button.btn ng-click="authenticate()"
-        | Авторизоваться
+  body.options-page ng-controller="OptionsCtrl"
+    header.header
+      | Оповещения VK
+      button.btn.right ng-click="clearAllGroups()"
+        | Очистить список групп
+    #wrapper
+      .auth-actions ng-hide="accessToken"
+        button.btn ng-click="authenticate()"
+          | Авторизоваться
 
-    .container ng-show="accessToken"
-      .option-items
-        .item ng-repeat="group in groups"
-          img ng-src="{{ group.photo }}"
-          a.group-header ng-href="http://vk.com/{{ group.screen_name }}"
-            | {{ group.name }}
-          button.btn ng-click="removeGroup(group)"
-            | Отписаться
+      .container ng-show="accessToken"
+        .option-items
+          .item ng-repeat="group in groups"
+            img ng-src="{{ group.photo }}"
+            a.group-header ng-href="http://vk.com/{{ group.screen_name }}"
+              | {{ group.name }}
+            button.btn ng-click="removeGroup(group)"
+              | Отписаться
 
-        .item ng-show="groupForm.editMode"
-          form name="groupForm" ng-submit="saveGroupForm()" novalidate=true
-            input.form-control type="text" ng-model="groupForm.groupUrl" name="groupUrl" placeholder="Ссылка на группу"
-            input.btn type="submit" value="Подписаться"
+          .item ng-show="groupForm.editMode"
+            form name="groupForm" ng-submit="saveGroupForm()" novalidate=true
+              input.form-control type="text" ng-model="groupForm.groupUrl" name="groupUrl" placeholder="Ссылка на группу"
+              input.btn type="submit" value="Подписаться"
 
-            .loader ng-class="{visible: groupForm.isSaving}"
-            .status ng-class="{visible: groupForm.hasError}"
-              | {{ groupForm.hasError }}
+              .loader ng-class="{visible: groupForm.isSaving}"
+              .status ng-class="{visible: groupForm.hasError}"
+                | {{ groupForm.hasError }}
 
-      button class="btn" ng-click="showGroupForm()"
-        | Добавить
+        button class="btn" ng-click="showGroupForm()"
+          | Добавить

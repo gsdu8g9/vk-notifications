@@ -5,35 +5,35 @@ html ng-app="vk-news" ng-cloak=true ng-csp=true
     meta charset="utf-8"
     link rel="stylesheet" href="stylesheets/styles.css"
     script type="text/javascript" src="javascripts/app.js"
-body.popup-page ng-controller="PopupCtrl"
-  header
-    span.title Оповещения VK
-    .pull-right
-      span id="clean-up"
-        i class="fa fa-eraser"
-      span title="Прочитать все"
-        i class="fa fa-check-square-o"
-      span title="Настройки" ng-click="openOptions()"
-        i class="fa fa-cog"
-  #wrapper
-    #notifications has-remote-links=true
-      p ng-if="!groups.length"
-        | Список отслеживаемых групп пуст. Добавьте группы в
-        a< href="#" ng-click="openOptions()" tabindex="-1" настройках расширения
-        |.
+  body.popup-page ng-controller="PopupCtrl"
+    header
+      span.title Оповещения VK
+      .pull-right
+        span id="clean-up"
+          i class="fa fa-eraser"
+        span title="Прочитать все"
+          i class="fa fa-check-square-o"
+        span title="Настройки" ng-click="openOptions()"
+          i class="fa fa-cog"
+    #wrapper
+      #notifications
+        p ng-if="!groups.length"
+          | Список отслеживаемых групп пуст. Добавьте группы в
+          a< href="#" ng-click="openOptions()" tabindex="-1" настройках расширения
+          |.
 
-      .item ng-repeat="post in posts" ng-init="group = postGroup(post)"
-        .group-image
-          a ng-href="group.screen_name | groupLink"
-            img ng-src="{{ group.photo }}" title="{{ group.name }}"
-        .item-content
-          .group-name
-            a ng-href="group.screen_name | groupLink" ng-bind="group.name"
-          .text ng-bind-html="post.text | formatText"
-          / .append( showAttachments(post.attachments) )
-          span.datestamp ng-bind="post.date * 1000 | date:'longDate'"
-    .actions
-      button.btn ng-hide="accessToken" ng-click="authenticate()"
-        | Авторизоваться
-      button.btn ng-show="accessToken" ng-click="signOut()"
-        | Выйти
+        .item ng-repeat="post in posts" ng-init="group = postGroup(post)" has-remote-links=true
+          .group-image
+            a ng-href="{{ group.screen_name | groupLink }}"
+              img ng-src="{{ group.photo }}" title="{{ group.name }}"
+          .item-content
+            .group-name
+              a ng-href="{{ group.screen_name | groupLink }}" ng-bind="group.name"
+            .text ng-bind-html="post.text | formatText"
+            / .append( showAttachments(post.attachments) )
+            span.datestamp ng-bind="post.date * 1000 | date:'longDate'"
+      .actions
+        button.btn ng-hide="isAuthenticated()" ng-click="authenticate()"
+          | Авторизоваться
+        button.btn ng-show="isAuthenticated()" ng-click="signOut()"
+          | Выйти
