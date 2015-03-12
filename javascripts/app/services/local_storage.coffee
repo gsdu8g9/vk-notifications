@@ -1,4 +1,4 @@
-VKNews.factory 'LocalStorage', ['$q', ($q) ->
+angular.module('vk-news').factory 'LocalStorage', ['$q', ($q) ->
   getValue: (name)->
     deferred = $q.defer()
     chrome.storage.local.get name, (data)->deferred.resolve(data[name])

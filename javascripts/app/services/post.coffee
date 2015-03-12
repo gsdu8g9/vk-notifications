@@ -1,4 +1,4 @@
-VKNews.factory 'Post', ['$q', 'LocalStorage', 'SyncStorage', 'API', 'Group', ($q, LocalStorage, SyncStorage, API, Group) ->
+angular.module('vk-news').factory 'Post', ['$q', 'LocalStorage', 'SyncStorage', 'API', 'Group', ($q, LocalStorage, SyncStorage, API, Group) ->
   query: (token)->
     deferred = $q.defer()
 

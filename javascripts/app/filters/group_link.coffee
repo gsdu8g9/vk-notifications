@@ -1,4 +1,4 @@
-VKNews.filter 'groupLink', ->
+angular.module('vk-news').filter 'groupLink', ->
   (input) ->
     input = input || '';
 

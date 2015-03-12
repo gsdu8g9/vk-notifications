@@ -55,7 +55,7 @@ OptionsCtrl = ($scope, $rootScope, API, Authentication, Group) ->
 
     $scope.groupForm.isSaving = false
 
-VKNews.controller 'OptionsCtrl', [
+angular.module('vk-news').controller 'OptionsCtrl', [
   '$scope',
   '$rootScope',
   'API',

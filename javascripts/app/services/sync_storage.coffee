@@ -1,4 +1,4 @@
-VKNews.factory 'SyncStorage', ['$q', ($q) ->
+angular.module('vk-news').factory 'SyncStorage', ['$q', ($q) ->
   getValue: (name)->
     deferred = $q.defer()
     chrome.storage.sync.get name, (data)->deferred.resolve(data[name])

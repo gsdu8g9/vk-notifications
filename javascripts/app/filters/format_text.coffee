@@ -1,4 +1,4 @@
-VKNews.filter 'formatText', ->
+angular.module('vk-news').filter 'formatText', ->
   (input) ->
     linkify = (text) ->
       urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim

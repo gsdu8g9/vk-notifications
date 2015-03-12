@@ -14,19 +14,11 @@ showAttachments = (attachments) ->
 
   $('<div />', class: 'attachments').append(photos).append(links)
 
-$ ->
-  chrome.storage.local.get 'vkaccess_token': {}, (items) ->
-    chrome.runtime.sendMessage {action: "noification_list", token: items.vkaccess_token}, (response) ->
-      if response.content is 'EMPTY_GROUP_ITEMS'
-        'no groups'
-      else
-        for item in response.data
-          $('#notifications').append(itemTemplate(item, response.groups));
-
-
-  # Remove posts_count information from localstorage
-  #
-  $('#clean-up').click (e) ->
-    chrome.runtime.sendMessage {action: "clean_up"}
-
-    e.preventDefault()
+# $ ->
+  # chrome.storage.local.get 'vkaccess_token': {}, (items) ->
+  #   chrome.runtime.sendMessage {action: "noification_list", token: items.vkaccess_token}, (response) ->
+  #     if response.content is 'EMPTY_GROUP_ITEMS'
+  #       'no groups'
+  #     else
+  #       for item in response.data
+  #         $('#notifications').append(itemTemplate(item, response.groups));

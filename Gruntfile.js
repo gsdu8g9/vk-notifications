@@ -23,8 +23,12 @@ module.exports = function(grunt) {
         },
         files: [
           {
-            src: ["javascripts/application.js"],
+            src: ["javascripts/app.js"],
             dest: "public/javascripts/app.js"
+          },
+          {
+            src: ["javascripts/background-app.js"],
+            dest: "public/javascripts/background-app.js"
           },
           {
             src: ["stylesheets/styles.scss"],

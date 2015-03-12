@@ -1,4 +1,5 @@
-PopupCtrl = ($scope, $rootScope, API, Authentication, Group, Post) ->
+PopupCtrl = ($scope, API, Authentication, Group, Post) ->
+  accessToken = null
   $scope.groups = []
   $scope.posts = []
 
@@ -7,11 +8,14 @@ PopupCtrl = ($scope, $rootScope, API, Authentication, Group, Post) ->
     console.log 'Groups', groups
 
   Authentication.getAccessToken().then (token) ->
-    $scope.accessToken = token
+    accessToken = token
 
     Post.query(token).then (posts)->
       console.log 'Posts', posts
       $scope.posts = posts.posts
+
+  $scope.isAuthenticated = ->
+    !!accessToken
 
   $scope.postGroup = (post) ->
     result = $scope.groups.filter (element, index) ->
@@ -23,13 +27,13 @@ PopupCtrl = ($scope, $rootScope, API, Authentication, Group, Post) ->
       {}
 
   $scope.signOut = ->
-    $scope.accessToken = null
+    accessToken = null
     Authentication.cleanSession()
 
   $scope.authenticate = ->
     Authentication.authenticate().then (result) ->
       if result.status
-        $scope.accessToken = result.accessToken
+        accessToken = result.accessToken
 
   # Open options tab, if the tab is already opened switch to one
   #
@@ -41,9 +45,13 @@ PopupCtrl = ($scope, $rootScope, API, Authentication, Group, Post) ->
   $scope.readAll = ->
     chrome.runtime.sendMessage {action: "watch_post", read: 'ALL'}
 
-VKNews.controller 'PopupCtrl', [
+  # Remove posts_count information from localstorage
+  #
+  $scope.cleanUp = ->
+    chrome.runtime.sendMessage {action: "clean_up"}
+
+angular.module('vk-news').controller 'PopupCtrl', [
   '$scope',
-  '$rootScope',
   'API',
   'Authentication',
   'Group',

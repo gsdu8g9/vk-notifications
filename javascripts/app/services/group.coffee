@@ -1,4 +1,4 @@
-VKNews.factory 'Group', ['$q', 'LocalStorage', 'SyncStorage', ($q, LocalStorage, SyncStorage) ->
+angular.module('vk-news').factory 'Group', ['$q', 'LocalStorage', 'SyncStorage', ($q, LocalStorage, SyncStorage) ->
   query: ->
     deferred = $q.defer()
     storagePromise = SyncStorage.getValue('group_ids')
