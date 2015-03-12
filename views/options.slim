@@ -19,8 +19,7 @@ html ng-app="vk-news" ng-cloak=true ng-csp=true
         .option-items
           .item ng-repeat="group in groups"
             img ng-src="{{ group.photo }}"
-            a.group-header ng-href="http://vk.com/{{ group.screen_name }}"
-              | {{ group.name }}
+            a.group-header group-link="group" ng-bind="group.name"
             button.btn ng-click="removeGroup(group)"
               | Отписаться
 
