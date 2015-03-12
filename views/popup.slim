@@ -24,7 +24,7 @@ html ng-app="vk-news" ng-cloak=true ng-csp=true
 
         .item ng-repeat="post in posts" ng-init="populatePostWithGroup(post)" has-remote-links=true
           .group-image
-            a ng-href="{{ post.group.screen_name | groupLink }}"
+            a group-link="post.group"
               img ng-src="{{ post.group.photo }}" title="{{ post.group.name }}"
           .item-content
             .group-name
