@@ -22,6 +22,39 @@ angular.module('vk-news').run ['Authentication', 'Browser', 'Post', '$log', (Aut
 
       sendResponse({content: "OK"})
 
+    if request.action is 'open_options_page'
+      optionsUrl = chrome.extension.getURL('options.html')
+
+      chrome.tabs.query url: optionsUrl, (tabs)->
+        if tabs.length
+          chrome.tabs.update tabs[0].id, active: true
+        else
+          chrome.tabs.create url: optionsUrl
+
+      sendResponse({content: 'OK'})
+
+    if request.action is "watch_post"
+      if request.read is 'ALL'
+        totalNewPosts = 0
+        chrome.browserAction.setBadgeText({text: badgeText(totalNewPosts)})
+      else
+  #      TODO: open tab with the clicked post
+  #      chrome.tabs.query url: optionsUrl, (tabs)->
+  #        if tabs.length
+  #          chrome.tabs.update tabs[0].id, active: true
+  #        else
+  #          chrome.tabs.create url: optionsUrl
+
+      sendResponse({content: 'OK'})
+
+    if request.action is 'clean_up'
+      chrome.storage.local.remove 'posts_count'
+      postsCount = {}
+
+      console.log('on clean_up - postsCount', postsCount)
+
+      sendResponse({content: 'OK'})
+
     true
 
   Browser.alarms.onAlarm.addListener (alarm)->
