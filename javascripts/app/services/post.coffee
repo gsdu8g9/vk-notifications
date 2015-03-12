@@ -1,16 +1,18 @@
-VKNews.factory 'Post', ['$q', 'LocalStorage', 'SyncStorage', 'API', ($q, LocalStorage, SyncStorage, API) ->
+VKNews.factory 'Post', ['$q', 'LocalStorage', 'SyncStorage', 'API', 'Group', ($q, LocalStorage, SyncStorage, API, Group) ->
   query: (token)->
     deferred = $q.defer()
 
     formatQueryResult = (values)->
       if values.length is 0
         result = values
-        new_posts = 0
+        newPosts = {}
       else
+        groupPostsCount = {}
+
         result = values.map((item) ->
           response = item.data.response
-          totalPostsCount = null
           posts = []
+          totalPostsCount = null
 
           for index, item of response
             if parseInt(index, 10) is 0
@@ -18,15 +20,17 @@ VKNews.factory 'Post', ['$q', 'LocalStorage', 'SyncStorage', 'API', ($q, LocalSt
             else
               posts.push item
 
+          groupId = posts[posts.length - 1].to_id
+          groupPostsCount[groupId] = totalPostsCount
+
           posts
         ).reduce (a, b) ->
           a.concat(b)
 
-        new_posts = 0
-
+        console.log groupPostsCount
       {
         posts: result,
-        new_posts: new_posts
+        new_posts: newPosts
       }
 
     if token

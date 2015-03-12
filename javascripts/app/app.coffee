@@ -1,6 +1,6 @@
 window.VKNews = angular.module('vk-news', ['ngSanitize', 'vk_api'])
 
-angular.module('vk-news').run ['Authentication', 'Browser', '$log', (Authentication, Browser, $log)->
+angular.module('vk-news').run ['Authentication', 'Browser', 'Post', '$log', (Authentication, Browser, Post, $log)->
   $log.info '## Application initialization'
 
   Browser.onInstalled.addListener (a) ->
@@ -28,6 +28,7 @@ angular.module('vk-news').run ['Authentication', 'Browser', '$log', (Authenticat
     $log.info "## Execute onAlarm event `#{alarm.name}`"
 
     if alarm.name is 'update_posts'
-      # TODO: here should go update post handler
-      Browser.setBadgeValue(1)
+      Post.query().then (posts) ->
+        newPosts = posts.new_posts
+        Browser.setBadgeValue(newPosts)
 ]
