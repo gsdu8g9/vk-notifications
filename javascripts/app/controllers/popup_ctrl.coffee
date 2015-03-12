@@ -17,14 +17,14 @@ PopupCtrl = ($scope, API, Authentication, Group, Post) ->
   $scope.isAuthenticated = ->
     !!accessToken
 
-  $scope.postGroup = (post) ->
+  $scope.populatePostWithGroup = (post) ->
     result = $scope.groups.filter (element, index) ->
       element if element.gid is post.to_id.toString()
 
     if result.length > 0
-      result[0]
+      post.group = result[0]
     else
-      {}
+      post.group = {}
 
   $scope.signOut = ->
     accessToken = null
