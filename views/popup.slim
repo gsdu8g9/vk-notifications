@@ -28,12 +28,10 @@ body.popup-page ng-controller="PopupCtrl"
             img ng-src="{{ group.photo }}" title="{{ group.name }}"
         .item-content
           .group-name
-            a ng-href="group.screen_name | groupLink"
-              | {{ group.name }}
+            a ng-href="group.screen_name | groupLink" ng-bind="group.name"
           .text ng-bind-html="post.text | formatText"
           / .append( showAttachments(post.attachments) )
-          span.datestamp
-            | {{ post.date * 1000 | date:'longDate' }}
+          span.datestamp ng-bind="post.date * 1000 | date:'longDate'"
     .actions
       button.btn ng-hide="accessToken" ng-click="authenticate()"
         | Авторизоваться
