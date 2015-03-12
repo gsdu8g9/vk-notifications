@@ -17,7 +17,11 @@ body.popup-page ng-controller="PopupCtrl"
         i class="fa fa-cog"
   #wrapper
     #notifications has-remote-links=true
-      p ng-if="!groups.length" Список отслеживаемых групп пуст. Добавьте группы в настройках расширения.
+      p ng-if="!groups.length"
+        | Список отслеживаемых групп пуст. Добавьте группы в
+        a< href="#" ng-click="openOptions()" tabindex="-1" настройках расширения
+        |.
+
       .item ng-repeat="post in posts" ng-init="group = postGroup(post)"
         .group-image
           a ng-href="group.screen_name | groupLink"
