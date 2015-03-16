@@ -29,8 +29,7 @@ html ng-app="vk-news" ng-cloak=true ng-csp=true
           .item-content
             .group-name
               a post-link="post" ng-bind="post.group.name"
-            .text ng-bind-html="post.text | formatText"
-            / .append( showAttachments(post.attachments) )
+            .content post-content="post"
             span.datestamp ng-bind="post.date * 1000 | date:'longDate'"
       .actions
         button.btn ng-hide="isAuthenticated()" ng-click="authenticate()"
