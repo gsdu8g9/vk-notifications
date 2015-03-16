@@ -1,4 +1,4 @@
-function Post ($q, LocalStorage, SyncStorage, API, Group) {
+function Post ($q, $filter, LocalStorage, SyncStorage, API, Group) {
   function emptyResult () {
     return {
       posts: [],
@@ -15,26 +15,29 @@ function Post ($q, LocalStorage, SyncStorage, API, Group) {
 
     var groupPostsCount = {};
 
-    result = responses.map(function (response) {
-      var response = response.data.response[0],
-          posts = [],
+    result = responses.map(function (responseChunk) {
+      var posts = [],
           totalPostsCount = null;
 
-      angular.forEach(response, function (item, index) {
-        if (parseInt(index, 10) === 0) {
-          totalPostsCount = item;
-        } else {
-          posts.push(item);
-        }
-      });
+      angular.forEach(responseChunk.data.response, function (response, index) {
+        angular.forEach(response, function (item, index) {
+          if (parseInt(index, 10) === 0) {
+            totalPostsCount = item;
+          } else {
+            posts.push(item);
+          }
+        });
 
-      var groupId = posts[posts.length - 1].to_id
-      groupPostsCount[groupId] = totalPostsCount
+        var groupId = posts[posts.length - 1].to_id;
+        groupPostsCount[groupId] = totalPostsCount;
+      });
 
       return posts;
     }).reduce(function (a, b) {
       return a.concat(b);
     })
+
+    result = $filter('orderBy')(result, 'date', true);
 
     console.log(groupPostsCount)
 
@@ -45,10 +48,10 @@ function Post ($q, LocalStorage, SyncStorage, API, Group) {
   }
 
   return {
-    query: function (token) {
+    query: function (accessToken) {
       var deferred = $q.defer();
 
-      if (token) {
+      if (accessToken) {
         var storagePromise = SyncStorage.getValue('group_ids');
         storagePromise.then(function (groupIds) {
           var promises = [];
@@ -57,7 +60,7 @@ function Post ($q, LocalStorage, SyncStorage, API, Group) {
           var chunkSize = 25;
           for (var i = 0, j = groupIds.length; i < j; i += chunkSize) {
             var groupIdsChunk = groupIds.slice(i, i + chunkSize);
-            promises.push(API.call('execute.getPosts', {group_ids: groupIdsChunk.join(','), access_token: token}));
+            promises.push(API.call('execute.getPosts', {group_ids: groupIdsChunk.join(','), access_token: accessToken}));
           }
 
           $q.all(promises).then(function (result) {
@@ -73,4 +76,4 @@ function Post ($q, LocalStorage, SyncStorage, API, Group) {
   }
 }
 
-angular.module('vk-news').factory('Post', ['$q', 'LocalStorage', 'SyncStorage', 'API', 'Group', Post])
+angular.module('vk-news').factory('Post', ['$q', '$filter', 'LocalStorage', 'SyncStorage', 'API', 'Group', Post])
