@@ -1,19 +1,18 @@
-function Post ($q, $filter, LocalStorage, SyncStorage, API, Group) {
+function Post ($q, $filter, LocalStorage, SyncStorage, API) {
   function emptyResult () {
     return {
       posts: [],
-      new_posts: {}
+      posts_count: {}
     }
   }
 
   function formatQueryResult (responses) {
-    var result, newPosts;
+    var result;
+    var groupPostsCount = {};
 
     if (responses.length === 0) {
       return emptyResult();
     }
-
-    var groupPostsCount = {};
 
     result = responses.map(function (responseChunk) {
       var posts = [],
@@ -39,11 +38,9 @@ function Post ($q, $filter, LocalStorage, SyncStorage, API, Group) {
 
     result = $filter('orderBy')(result, 'date', true);
 
-    console.log(groupPostsCount)
-
     return {
       posts: result,
-      new_posts: newPosts
+      posts_count: groupPostsCount
     }
   }
 
@@ -64,7 +61,9 @@ function Post ($q, $filter, LocalStorage, SyncStorage, API, Group) {
           }
 
           $q.all(promises).then(function (result) {
-            deferred.resolve(formatQueryResult(result));
+            result = formatQueryResult(result)
+
+            deferred.resolve(result);
           });
         });
       } else {
@@ -76,4 +75,4 @@ function Post ($q, $filter, LocalStorage, SyncStorage, API, Group) {
   }
 }
 
-angular.module('vk-news').factory('Post', ['$q', '$filter', 'LocalStorage', 'SyncStorage', 'API', 'Group', Post])
+angular.module('vk-news').factory('Post', ['$q', '$filter', 'LocalStorage', 'SyncStorage', 'API', Post])
