@@ -78,7 +78,7 @@ function onRun (Authentication, Browser, Post, $log) {
 
     if (alarm.name === 'update_posts') {
       Post.query().then(function (posts) {
-        newPosts = posts.new_posts;
+        newPosts = posts.posts_count;
         Browser.setBadgeValue(newPosts);
       })
     }
