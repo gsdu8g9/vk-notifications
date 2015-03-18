@@ -19,13 +19,10 @@ function Post ($q, $filter, LocalStorage, SyncStorage, API) {
           totalPostsCount = null;
 
       angular.forEach(responseChunk.data.response, function (response, index) {
-        angular.forEach(response, function (item, index) {
-          if (parseInt(index, 10) === 0) {
-            totalPostsCount = item;
-          } else {
-            posts.push(item);
-          }
-        });
+        var data = response;
+
+        totalPostsCount = data.splice(0, 1);
+        posts = posts.concat(data);
 
         var groupId = posts[posts.length - 1].to_id;
         groupPostsCount[groupId] = totalPostsCount;

@@ -66,13 +66,20 @@ module.exports = function(grunt) {
         dest: 'public/fonts'
       }
     },
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js'
+      }
+    }
   });
 
   grunt.loadNpmTasks('grunt-mincer');
   grunt.loadNpmTasks('grunt-slim');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('default', ['mince', 'slim']);
+  grunt.registerTask('test', ['mince', 'karma']);
   grunt.registerTask('build', ['clean', 'default', 'copy']);
 };
